@@ -1,5 +1,5 @@
 # 📦 Gestão de Estoque – API com FastAPI
- Alunos: Felipe de Souza Alves Matheus - RA: 007288
+ `Alunos`: Felipe de Souza Alves Matheus - RA: 007288
          Caio da Silva Melo - RA: 007206
 
 Este projeto consiste em uma **API de gestão de estoque** desenvolvida como atividade prática para a disciplina de **Desenvolvimento de Sistemas WEB I**.
