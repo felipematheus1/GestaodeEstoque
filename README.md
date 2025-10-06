@@ -1,166 +1,109 @@
-# 📦 Gestão de Estoque – FastAPI
+É uma ótima descrição de projeto! Eu editei e reformatei o texto, corrigindo pequenos erros de português e padronizando a estrutura do Markdown para maior clareza e profissionalismo.
 
-Este projeto foi desenvolvido como atividade prática de **Desenvolvimento de Sistemas WEB I**.  
-A aplicação consiste em uma **API de gestão de estoque**, construída em **FastAPI** com **SQLite** como banco de dados.
+Aqui está o texto revisado:
 
-O sistema expande o CRUD de **Produtos** e **Categorias** com funcionalidades completas de **controle de estoque**, seguindo as etapas solicitadas na atividade.
+📦 Gestão de Estoque – API com FastAPI
+Este projeto consiste em uma API de gestão de estoque desenvolvida como atividade prática para a disciplina de Desenvolvimento de Sistemas WEB I.
 
----
+A aplicação foi construída utilizando FastAPI e SQLite como banco de dados. O sistema implementa o CRUD completo para Produtos e Categorias, e expande com funcionalidades robustas de controle de estoque e relatórios, conforme solicitado nas etapas da atividade.
 
-## 🚀 Funcionalidades Implementadas
+🚀 Funcionalidades Implementadas
+🔹 Produtos
+O modelo Produto foi expandido com campos cruciais para a gestão de estoque:
 
-### 🔹 Produtos
-Campos adicionais:
-- `estoque_minimo` → quantidade mínima exigida.  
-- `ativo` → indica se o produto está ativo.  
+estoque_minimo: Quantidade mínima exigida em estoque.
 
-### 🔹 Movimentações de Estoque
-Novo modelo `EstoqueMovimento`:
-- `id, produto_id, tipo (ENTRADA/SAIDA), quantidade, motivo, criado_em`.  
+ativo: Flag booleana que indica se o produto está disponível para operações.
 
-Rotas:
-- `POST /api/v1/estoque/movimentos` → cria uma movimentação.  
-- `GET /api/v1/estoque/saldo/{produto_id}` → mostra o saldo atual.  
+🔹 Movimentações de Estoque
+Novo modelo EstoqueMovimento para registro detalhado das transações:
 
-### 🔹 Regras de Saldo
-- Saldo é sempre calculado: **entradas – saídas**.  
-- Bloqueio de saldo negativo (**por padrão**).  
-- Configurável via variável `ALLOW_NEGATIVE_STOCK` em `.env`.  
+id, produto_id, tipo (ENTRADA/SAIDA), quantidade, motivo, criado_em.
 
-### 🔹 Operações Compostas
-- `POST /api/v1/estoque/venda` → registra SAÍDA com motivo `"venda"`.  
-- `POST /api/v1/estoque/devolucao` → registra ENTRADA com motivo `"devolucao"`.  
-- `POST /api/v1/estoque/ajuste` → registra ENTRADA ou SAÍDA, com motivo obrigatório.  
+Rotas Principais:
 
-### 🔹 Relatórios
-- `GET /api/v1/estoque/extrato/{produto_id}?limit&offset` → histórico de movimentações.  
-- `GET /api/v1/estoque/resumo` → resumo de todos os produtos (saldo, estoque mínimo, status).  
-- `GET /api/v1/produtos/abaixo-minimo` → lista produtos abaixo do estoque mínimo.  
+POST /api/v1/estoque/movimentos: Cria uma movimentação manual.
 
----
+GET /api/v1/estoque/saldo/{produto_id}: Retorna o saldo atual do produto.
 
-## ⚙️ Requisitos
+🔹 Regras de Saldo
+Cálculo de Saldo: O saldo é sempre calculado dinamicamente (entradas – saídas) a partir do histórico de movimentações, nunca armazenado diretamente.
 
-- Python 3.10+  
-- FastAPI  
-- SQLAlchemy  
-- Uvicorn  
+Bloqueio de Saldo Negativo: Implementado por padrão, mas é configurável via variável de ambiente ALLOW_NEGATIVE_STOCK no arquivo .env.
 
-Instale as dependências:
-```bash
-pip install -r requirements.txt
+🔹 Operações Compostas (Business Logic)
+Rotas simplificadas para operações comuns:
 
-Como Executar
+POST /api/v1/estoque/venda: Registra uma SAÍDA com o motivo "venda".
 
+POST /api/v1/estoque/devolucao: Registra uma ENTRADA com o motivo "devolucao".
+
+POST /api/v1/estoque/ajuste: Registra uma ENTRADA ou SAÍDA para ajuste de inventário (motivo obrigatório).
+
+🔹 Relatórios e Consultas
+GET /api/v1/estoque/extrato/{produto_id}?limit&offset: Histórico detalhado de movimentações.
+
+GET /api/v1/estoque/resumo: Resumo consolidado de todos os produtos (saldo, estoque mínimo, status).
+
+GET /api/v1/produtos/abaixo-minimo: Lista de produtos cujo saldo atual está abaixo do estoque_minimo.
+
+⚙️ Configuração e Execução
+Requisitos
+Python 3.10+
+
+FastAPI
+
+SQLAlchemy
+
+Uvicorn
+
+Instalação
 Clone o projeto ou baixe os arquivos.
 
 Crie e ative o ambiente virtual:
 
+Bash
+
 python -m venv venv
-venv\Scripts\activate   # Windows
-source venv/bin/activate  # Linux/Mac
+# Windows
+venv\Scripts\activate
+# Linux/Mac
+source venv/bin/activate
+Instale as dependências:
 
+Bash
 
-Instale as dependências.
+pip install -r requirements.txt
+Execute a aplicação:
 
-Rode a aplicação:
+Bash
 
 uvicorn app.main:app --reload
+Acesso à API
+Acesse as interfaces interativas no navegador:
 
-
-Acesse no navegador:
-
-Swagger: http://127.0.0.1:8000/docs
+Swagger UI: http://127.0.0.1:8000/docs
 
 Redoc: http://127.0.0.1:8000/redoc
 
-🌐 Exemplos de Uso (via Swagger)
-Criar Produto
-{
-  "nome": "Camiseta Azul",
-  "descricao": "Camiseta tamanho M",
-  "preco": 50,
-  "categoria_id": 1,
-  "estoque_minimo": 5,
-  "ativo": true
-}
+🌐 Exemplos de Uso (Via Swagger)
+Operação	Rota / Dados de Exemplo
+Criar Produto	POST /api/v1/produtos json\n{\n "nome": "Camiseta Azul",\n "descricao": "Camiseta tamanho M",\n "preco": 50,\n "categoria_id": 1,\n "estoque_minimo": 5,\n "ativo": true\n}
+Movimentação (ENTRADA)	POST /api/v1/estoque/movimentos json\n{\n "produto_id": 1,\n "tipo": "ENTRADA",\n "quantidade": 10,\n "motivo": "compra_fornecedor"\n}
+Movimentação (SAÍDA)	POST /api/v1/estoque/movimentos json\n{\n "produto_id": 1,\n "tipo": "SAIDA",\n "quantidade": 3,\n "motivo": "venda"\n}
+Venda (Simplificada)	POST /api/v1/estoque/venda?produto_id=1&quantidade=2
+Devolução (Simplificada)	POST /api/v1/estoque/devolucao?produto_id=1&quantidade=1
+Consultar Saldo	GET /api/v1/estoque/saldo/1 Exemplo de Resposta: {"produto_id": 1, "saldo": 7}
+Extrato	GET /api/v1/estoque/extrato/1?limit=10&offset=0
+Produtos Abaixo Mínimo	GET /api/v1/produtos/abaixo-minimo
 
-Criar Movimentação de Estoque (ENTRADA)
-{
-  "produto_id": 1,
-  "tipo": "ENTRADA",
-  "quantidade": 10,
-  "motivo": "compra_fornecedor"
-}
-
-Criar Movimentação de Estoque (SAÍDA)
-{
-  "produto_id": 1,
-  "tipo": "SAIDA",
-  "quantidade": 3,
-  "motivo": "venda"
-}
-
-Consultar Saldo
-
-GET /api/v1/estoque/saldo/1
-Resposta:
-
-{
-  "produto_id": 1,
-  "saldo": 7
-}
-
-Venda
-
-POST /api/v1/estoque/venda?produto_id=1&quantidade=2
-
-Devolução
-
-POST /api/v1/estoque/devolucao?produto_id=1&quantidade=1
-
-Ajuste
-
-POST /api/v1/estoque/ajuste
-
-{
-  "produto_id": 1,
-  "tipo": "SAIDA",
-  "quantidade": 1,
-  "motivo": "perda"
-}
-
-Produtos abaixo do mínimo
-
-GET /api/v1/produtos/abaixo-minimo
-
-Extrato de Movimentações
-
-GET /api/v1/estoque/extrato/1?limit=10&offset=0
-
-Resumo de Estoque
-
-GET /api/v1/estoque/resumo
-
+Exportar para as Planilhas
 📌 Decisões Técnicas
+Integridade Transacional: Uso de PRAGMA foreign_keys=ON no SQLite para garantir a integridade referencial dos dados.
 
-Saldo sempre recalculado a partir das movimentações, nunca gravado direto.
+Cálculo de Saldo: Saldo é sempre recalculado a partir das movimentações, garantindo a rastreabilidade e evitando inconsistências por dados redundantes.
 
-Bloqueio de saldo negativo implementado (padrão: não permite).
-
-SQLite configurado com PRAGMA foreign_keys=ON para garantir integridade.
-
-Schemas Pydantic usados em todas as rotas para consistência.
+Modelagem e Validação: Utilização de Schemas Pydantic em todas as rotas para validação de dados de entrada e saída, assegurando consistência da API.
 
 🏁 Conclusão
-
-Todas as etapas da atividade foram atendidas:
-
-Modelagem de produto e movimentações.
-
-Regras de saldo e estoque mínimo.
-
-Operações compostas (venda, devolução, ajuste).
-
-Relatórios (extrato e resumo).
-
+Todas as etapas da atividade foram atendidas, com a implementação completa da modelagem de produtos e movimentações, as regras de saldo e estoque mínimo, operações compostas (venda, devolução, ajuste) e relatórios de extrato e resumo.
