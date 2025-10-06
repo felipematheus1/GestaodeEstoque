@@ -6,6 +6,7 @@ A aplicação consiste em uma API de gestão de estoque, construída em FastAPI 
 O sistema expande o CRUD de Produtos e Categorias com funcionalidades completas de controle de estoque, seguindo as etapas solicitadas na atividade.
 
 🚀 Funcionalidades Implementadas
+
 🔹 Produtos
 
 Campos adicionais:
